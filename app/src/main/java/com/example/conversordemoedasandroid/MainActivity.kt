@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Essa função puxa as moedas de dentro da API e guarda elas dentro de uma mutableList
-    // assim fica mais facil de pegarmos elas dentro do nosso código
+    // assim fica mais facil de pegarmos elas dentro do nosso código.
     fun getCurrencies() {
         val retrofitClient = NetworkUtils
             .getRetrofitInstance("https://cdn.jsdelivr.net/")
