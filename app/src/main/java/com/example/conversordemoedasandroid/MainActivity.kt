@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             retrofit2.Callback<JsonObject> {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                val data = response.body()?.entrySet()?.find { it.key == spinnerTo.selectedItem.toString() }
+                var data = response.body()?.entrySet()?.find { it.key == spinnerTo.selectedItem.toString() }
                 val rate: Double = data?.value.toString().toDouble()
                 val conversao = valorDigitado.text.toString().toDouble() * rate
 
@@ -72,21 +72,21 @@ class MainActivity : AppCompatActivity() {
                 val data = mutableListOf<String>()
 
                 response.body()?.keySet()?.iterator()?.forEach{
-                    data.add(it.uppercase())
+                    data.add(it)
                     // faço que elas fiquem em Caixa Alta para melhor visualização dentro do app
 
                 }
 
-                val posicaoMoedaBR = data.indexOf("BRL")
-                val  posicaoMoedaUSA = data.indexOf("USD")
+                val posicaoMoedaBR = data.indexOf("brl")
+                val  posicaoMoedaUSA = data.indexOf("usd")
 
                 // Atribuimos essa mutableList(data) aos nossos spinners , que vão conter todas as nossas moedas ♥
                 val adapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, data)
                 spinnerFrom.adapter = adapter
                 spinnerTo.adapter = adapter
 
-                spinnerFrom.setSelection(posicaoMoedaUSA)
-                spinnerTo.setSelection(posicaoMoedaBR)
+                spinnerFrom.setSelection(posicaoMoedaBR)
+                spinnerTo.setSelection(posicaoMoedaUSA)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
