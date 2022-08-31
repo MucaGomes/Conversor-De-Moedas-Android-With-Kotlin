@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resultado: TextView
     private lateinit var valorDigitado: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,30 +32,42 @@ class MainActivity : AppCompatActivity() {
 
         getCurrencies()
 
-        btConversao.setOnClickListener{
+        btConversao.setOnClickListener {
             convertMoeda()
         }
     }
 
     // Nessa função faremos a conversão dos valores obtidos da API , depois realocamos para que essa função seja atribuida ao botão Calcular
-    fun convertMoeda(){
+
+    fun convertMoeda() {
         val retrofitClient = NetworkUtils.getRetrofitInstance("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(Endpoint::class.java)
 
-        endpoint.getCurrencyRate(spinnerFrom.selectedItem.toString(), spinnerTo.selectedItem.toString()).enqueue(object :
+        endpoint.getCurrencyRate(spinnerFrom.selectedItem.toString(),
+            spinnerTo.selectedItem.toString()).enqueue(object :
             retrofit2.Callback<JsonObject> {
 
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                var data = response.body()?.entrySet()?.find { it.key == spinnerTo.selectedItem.toString() }
-                val rate: Double = data?.value.toString().toDouble()
-                val conversao = valorDigitado.text.toString().toDouble() * rate
 
-                // Depois de toda a conversão , pegamos o resultado e tranformamos o objeto Resultado(TextView) nesse valor
-                resultado.setText(conversao.toString())
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+                try {
+
+                    var data = response.body()?.entrySet()
+                        ?.find { it.key == spinnerTo.selectedItem.toString() }
+                    val rate: Double = data?.value.toString().toDouble()
+                    val conversao = valorDigitado.text.toString().toDouble() * rate
+                    val conversaoFormat = "%.2f".format(conversao)
+
+                    // Depois de toda a conversão , pegamos o resultado e tranformamos o objeto Resultado(TextView) nesse valor
+                    resultado.setText(conversaoFormat.toString())
+
+                } catch (e: Exception) {
+                    print(e)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                print("Não carregou!")
+                Toast.makeText(baseContext, "Valor inválido!!", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -67,33 +80,32 @@ class MainActivity : AppCompatActivity() {
 
         val endpoint = retrofitClient.create(Endpoint::class.java)
 
-        endpoint.getCurrencies().enqueue(object : retrofit2.Callback<JsonObject>{
+        endpoint.getCurrencies().enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 val data = mutableListOf<String>()
 
-                response.body()?.keySet()?.iterator()?.forEach{
+                response.body()?.keySet()?.iterator()?.forEach {
                     data.add(it)
                     // faço que elas fiquem em Caixa Alta para melhor visualização dentro do app
 
                 }
 
-                val posicaoMoedaBR = data.indexOf("brl")
-                val  posicaoMoedaUSA = data.indexOf("usd")
+                val posicaoReal = data.indexOf("brl")
+                val posicaoDolar = data.indexOf("usd")
 
                 // Atribuimos essa mutableList(data) aos nossos spinners , que vão conter todas as nossas moedas ♥
-                val adapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, data)
+                val adapter = ArrayAdapter(baseContext, R.layout.spinner_item, data)
                 spinnerFrom.adapter = adapter
                 spinnerTo.adapter = adapter
 
-                spinnerFrom.setSelection(posicaoMoedaBR)
-                spinnerTo.setSelection(posicaoMoedaUSA)
+                spinnerFrom.setSelection(posicaoDolar)
+                spinnerTo.setSelection(posicaoReal)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 print("Não carregou as informações")
             }
         })
-
     }
 }
 

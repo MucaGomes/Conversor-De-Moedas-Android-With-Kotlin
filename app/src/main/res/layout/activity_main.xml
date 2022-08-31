@@ -1,53 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@drawable/background_layout"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <LinearLayout
+        android:id="@+id/layoutTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="92dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="de" />
-
-        <Spinner
-            android:id="@+id/spinnerfrom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="para" />
-
-        <Spinner
-            android:id="@+id/spinnerTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:gravity="center"
+            android:text="Conversão de Moedas"
+            android:textColor="#FFFF"
+            android:textSize="30sp" />
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/layoutDe"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="65dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="377dp"
+            android:layout_height="105dp"
+            app:cardBackgroundColor="#54A96C"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="31dp"
+                android:src="@drawable/money_from" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="From"
+                android:textColor="#FFFF"
+                android:textSize="15sp" />
+
+            <Spinner
+                android:id="@+id/spinnerfrom"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="69dp"
+                android:layout_marginTop="37dp"
+                android:backgroundTint="@color/white" />
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:rotation="90"
+        android:src="@drawable/troca">
+
+
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:gravity="center">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="377dp"
+            android:layout_height="105dp"
+            app:cardBackgroundColor="#54A96C"
+            app:cardCornerRadius="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="To"
+                android:textColor="#FFF"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/money_de" />
+
+            <Spinner
+                android:id="@+id/spinnerTo"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="69dp"
+                android:layout_marginTop="37dp"
+                android:backgroundTint="#FFFF" />
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Valor" />
+            android:text="$"
+            android:textColor="#FFFF"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/valorDigitado"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:inputType="number"
             android:minWidth="100dp" />
 
@@ -55,13 +143,25 @@
 
     <Button
         android:id="@+id/btConversao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Converter" />
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/background_button"
+        android:text="Converter"
+        android:textColor="@color/white"
+        app:backgroundTint="#54A96C" />
 
     <TextView
         android:id="@+id/resultado"
-        android:layout_width="125dp"
-        android:layout_height="60dp" />
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:hint="Resultado"
+        android:textColor="#54A96C"
+        android:textColorHint="#54A96C"
+        android:textSize="40sp" />
 
 </LinearLayout>
