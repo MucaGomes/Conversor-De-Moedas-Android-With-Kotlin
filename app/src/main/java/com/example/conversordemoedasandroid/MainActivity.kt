@@ -19,16 +19,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvresult: TextView
     private lateinit var value: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-<<<<<<< HEAD
         // Aqui identificamos os objetos
         spinnerFrom = findViewById(R.id.spinnerfrom)
-=======
+
         spinnerFrom = findViewById(R.id.spinnerFrom)
->>>>>>> 5a3f7ff911dae401dd820872b6d5dcc22b2bea58
+        
         spinnerTo = findViewById(R.id.spinnerTo)
         btConversion = findViewById(R.id.btConversao)
         tvresult = findViewById(R.id.tvResult)
@@ -36,28 +36,55 @@ class MainActivity : AppCompatActivity() {
 
         getCurrencies()
 
+        btConversao.setOnClickListener {
+
         btConversion.setOnClickListener {
             convertMoeda()
         }
     }
 
-<<<<<<< HEAD
+
     // Nessa função faremos a conversão dos valores obtidos da API , depois realocamos para que essa função seja atribuida ao botão Calcular
-    fun convertMoeda(){
-=======
+
+
     fun convertMoeda() {
->>>>>>> 5a3f7ff911dae401dd820872b6d5dcc22b2bea58
+
+    fun convertMoeda(){
+
+    fun convertMoeda() {
+
         val retrofitClient = NetworkUtils.getRetrofitInstance("https://cdn.jsdelivr.net/")
         val endpoint = retrofitClient.create(Endpoint::class.java)
 
-        endpoint.getCurrencyRate(spinnerFrom.selectedItem.toString(), spinnerTo.selectedItem.toString()).enqueue(object :
+        endpoint.getCurrencyRate(spinnerFrom.selectedItem.toString(),
+            spinnerTo.selectedItem.toString()).enqueue(object :
             retrofit2.Callback<JsonObject> {
+
+
+
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
 
-<<<<<<< HEAD
+                try {
+
+                    var data = response.body()?.entrySet()
+                        ?.find { it.key == spinnerTo.selectedItem.toString() }
+                    val rate: Double = data?.value.toString().toDouble()
+                    val conversao = valorDigitado.text.toString().toDouble() * rate
+                    val conversaoFormat = "%.2f".format(conversao)
+
+                    // Depois de toda a conversão , pegamos o resultado e tranformamos o objeto Resultado(TextView) nesse valor
+                    resultado.setText(conversaoFormat.toString())
+
+                } catch (e: Exception) {
+                    print(e)
+                }
+
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+
+
                 // Depois de toda a conversão , pegamos o resultado e tranformamos o objeto Resultado(TextView) nesse valor
                 resultado.setText(conversao.toString())
-=======
+
                 try {
                     var data = response.body()?.entrySet()?.find { it.key == spinnerTo.selectedItem.toString() }
                     val rate: Double = data?.value.toString().toDouble()
@@ -68,11 +95,11 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     print(e.message)
                 }
->>>>>>> 5a3f7ff911dae401dd820872b6d5dcc22b2bea58
+
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                print("Não carregou!")
+                Toast.makeText(baseContext, "Valor inválido!!", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -87,34 +114,44 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 var data = mutableListOf<String>()
 
-<<<<<<< HEAD
-                response.body()?.keySet()?.iterator()?.forEach{
-                    data.add(it.uppercase())
-                    // faço que elas fiquem em Caixa Alta para melhor visualização dentro do app
-=======
                 response.body()?.keySet()?.iterator()?.forEach {
                     data.add(it)
->>>>>>> 5a3f7ff911dae401dd820872b6d5dcc22b2bea58
 
+                response.body()?.keySet()?.iterator()?.forEach{
+                    data.add(it.uppercase())
+
+                    // faço que elas fiquem em Caixa Alta para melhor visualização dentro do app
+
+                response.body()?.keySet()?.iterator()?.forEach {
+                    data.add(it)
                 }
+
+
+                val posicaoReal = data.indexOf("brl")
+                val posicaoDolar = data.indexOf("usd")
 
                 val posicaoBRL = data.indexOf("brl")
                 val posicaoUSD = data.indexOf("usd")
 
+
                 // Atribuimos essa mutableList(data) aos nossos spinners , que vão conter todas as nossas moedas ♥
-                val adapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, data)
+                val adapter = ArrayAdapter(baseContext, R.layout.spinner_item, data)
                 spinnerFrom.adapter = adapter
                 spinnerTo.adapter = adapter
 
+
+                spinnerFrom.setSelection(posicaoDolar)
+                spinnerTo.setSelection(posicaoReal)
+
                 spinnerFrom.setSelection(posicaoUSD)
                 spinnerTo.setSelection(posicaoBRL)
+
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 print("Não carregou as informações")
             }
         })
-
     }
 }
 
